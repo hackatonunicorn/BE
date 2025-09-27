@@ -1,0 +1,19 @@
+Subject: {subject}
+
+Dear {recipient_name},
+
+{update_opener}
+
+{milestone_updates}
+
+{metrics_update}
+
+{upcoming_plans}
+
+{continued_interest}
+
+Best regards,
+{sender_signature}
+
+{startup_name}
+{contact_information}

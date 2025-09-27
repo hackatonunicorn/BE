@@ -1,0 +1,19 @@
+Subject: {subject}
+
+Dear {recipient_name},
+
+{follow_up_opener}
+
+{progress_update}
+
+{additional_context}
+
+{specific_ask}
+
+{closing_line}
+
+Best regards,
+{sender_signature}
+
+{startup_name}
+{contact_information}

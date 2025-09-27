@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ startup_name }} - Requested Information</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .startup-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #007bff;
+            margin: 0;
+        }
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .content {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        .materials-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .materials-section h3 {
+            margin: 0 0 20px 0;
+            color: #007bff;
+            font-size: 18px;
+            text-align: center;
+        }
+        .document-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .document-item {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .document-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #007bff;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .document-info {
+            flex-grow: 1;
+        }
+        .document-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .document-description {
+            font-size: 13px;
+            color: #6c757d;
+        }
+        .financial-highlights {
+            background-color: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .financial-highlights h3 {
+            margin: 0 0 15px 0;
+            color: #28a745;
+            font-size: 16px;
+        }
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .metric {
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .metric-label {
+            font-size: 11px;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+        .additional-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .additional-info h3 {
+            margin: 0 0 15px 0;
+            color: #856404;
+            font-size: 16px;
+        }
+        .call-to-action {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border-radius: 8px;
+            color: white;
+        }
+        .call-to-action h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: #007bff;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .signature {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .signature-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .signature-title {
+            color: #6c757d;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .signature-contact {
+            color: #495057;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1 class="startup-name">{{ startup_name }} - Requested Information</h1>
+        </div>
+
+        <div class="greeting">
+            Dear {{ partner_name }},
+        </div>
+
+        <div class="content">
+            <p>Thank you for your interest in {{ startup_name }} and for requesting additional information. As promised, I've compiled a comprehensive package of materials that should provide you with all the details needed for your evaluation.</p>
+
+            <div class="materials-section">
+                <h3>📋 Requested Documents & Materials</h3>
+                <ul class="document-list">
+                    <li class="document-item">
+                        <div class="document-icon">📊</div>
+                        <div class="document-info">
+                            <div class="document-name">Pitch Deck</div>
+                            <div class="document-description">Comprehensive 15-slide presentation covering market opportunity, solution, business model, and financial projections</div>
+                        </div>
+                    </li>
+                    <li class="document-item">
+                        <div class="document-icon">💰</div>
+                        <div class="document-info">
+                            <div class="document-name">Financial Statements</div>
+                            <div class="document-description">Detailed P&L, balance sheet, cash flow statements, and 3-year projections</div>
+                        </div>
+                    </li>
+                    <li class="document-item">
+                        <div class="document-icon">📈</div>
+                        <div class="document-info">
+                            <div class="document-name">Unit Economics</div>
+                            <div class="document-description">Customer acquisition cost, lifetime value, churn analysis, and cohort metrics</div>
+                        </div>
+                    </li>
+                    <li class="document-item">
+                        <div class="document-icon">👥</div>
+                        <div class="document-info">
+                            <div class="document-name">Team Bios</div>
+                            <div class="document-description">Detailed backgrounds of founding team and key executives</div>
+                        </div>
+                    </li>
+                    <li class="document-item">
+                        <div class="document-icon">🏢</div>
+                        <div class="document-info">
+                            <div class="document-name">Customer References</div>
+                            <div class="document-description">Contact information for 3 key customers willing to provide references</div>
+                        </div>
+                    </li>
+                    <li class="document-item">
+                        <div class="document-icon">📜</div>
+                        <div class="document-info">
+                            <div class="document-name">Legal Documents</div>
+                            <div class="document-description">Cap table, IP portfolio, key contracts, and regulatory compliance status</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="financial-highlights">
+                <h3>💰 Key Financial Highlights</h3>
+                <p>Here are some key metrics that demonstrate {{ startup_name }}'s strong financial position:</p>
+                <div class="metrics-row">
+                    <div class="metric">
+                        <div class="metric-value">${{ '{:,}'.format(random.randint(100000, 500000)) }}</div>
+                        <div class="metric-label">ARR</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">{{ random.randint(85, 95) }}%</div>
+                        <div class="metric-label">Gross Margin</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">${{ random.randint(150, 300) }}</div>
+                        <div class="metric-label">CAC</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">${{ random.randint(2000, 5000) }}</div>
+                        <div class="metric-label">LTV</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">{{ random.randint(3, 8) }}%</div>
+                        <div class="metric-label">Monthly Churn</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">{{ random.randint(150, 300) }}%</div>
+                        <div class="metric-label">LTV:CAC Ratio</div>
+                    </div>
+                </div>
+            </div>
+
+            {% if requested_documents %}
+            <div class="additional-info">
+                <h3>🎯 Specifically Requested Items</h3>
+                <p>Based on your specific requests, I've included:</p>
+                <ul>
+                    {% for doc in requested_documents %}
+                    <li><strong>{{ doc }}</strong> - Detailed analysis and supporting documentation</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <p><strong>Market Opportunity:</strong> The {{ startup_industry }} market is projected to reach ${{ '{:,}'.format(random.randint(50, 200)) }}B by {{ current_year + 3 }}, and {{ startup_name }} is well-positioned to capture a significant share with our {{ startup_stage }} stage solution.</p>
+
+            <p><strong>Competitive Advantage:</strong> Our proprietary technology and strong customer relationships give us a sustainable competitive moat in the {{ startup_industry }} space.</p>
+        </div>
+
+        <div class="call-to-action">
+            <h3>Ready for Next Steps?</h3>
+            <p>I'd be happy to walk through any of these materials in detail and answer any questions you may have.</p>
+            <p><strong>Proposed next steps:</strong></p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>Review materials and prepare questions</li>
+                <li>Schedule a 30-minute Q&A session</li>
+                <li>Arrange customer reference calls</li>
+                <li>Plan comprehensive due diligence process</li>
+            </ul>
+            {% if meeting_availability %}
+            <p><strong>Available for discussion:</strong> {{ meeting_availability }}</p>
+            {% endif %}
+        </div>
+
+        <div class="signature">
+            <div class="signature-name">{{ contact_person }}</div>
+            <div class="signature-title">CEO & Founder, {{ startup_name }}</div>
+            <div class="signature-contact">
+                📧 {{ startup_email }}<br>
+                📅 Available for calls: {{ meeting_availability or 'Flexible scheduling' }}<br>
+                📱 Direct: Available upon request
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for considering {{ startup_name }} for your investment portfolio.</p>
+            <p>{{ current_date }}</p>
+        </div>
+    </div>
+</body>
+</html>

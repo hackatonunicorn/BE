@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank you for your interest in {{ startup_name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .startup-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #28a745;
+            margin: 0;
+        }
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .content {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        .progress-update {
+            background-color: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .progress-update h3 {
+            margin: 0 0 15px 0;
+            color: #28a745;
+            font-size: 16px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .metric-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+        .metric-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .next-steps {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .next-steps h3 {
+            margin: 0 0 15px 0;
+            color: #856404;
+            font-size: 16px;
+        }
+        .next-steps ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .next-steps li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        .call-to-action {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-radius: 8px;
+            color: white;
+        }
+        .call-to-action h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: #28a745;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .signature {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .signature-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .signature-title {
+            color: #6c757d;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .signature-contact {
+            color: #495057;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1 class="startup-name">Thank you for your interest in {{ startup_name }}!</h1>
+        </div>
+
+        <div class="greeting">
+            Dear {{ partner_name }},
+        </div>
+
+        <div class="content">
+            <p>Thank you for your positive response regarding {{ startup_name }}. We're excited about the potential partnership and the opportunity to work with {{ fund_name }}.</p>
+
+            {% if previous_interaction %}
+            <p>Following up on our {{ previous_interaction }}, I wanted to share some exciting updates and next steps.</p>
+            {% endif %}
+
+            <div class="progress-update">
+                <h3>📈 Recent Progress & Milestones</h3>
+                <p>Since our last communication, {{ startup_name }} has achieved significant milestones:</p>
+                <ul>
+                    <li><strong>Revenue Growth:</strong> 40% month-over-month increase</li>
+                    <li><strong>Customer Acquisition:</strong> 15 new enterprise customers signed</li>
+                    <li><strong>Product Development:</strong> Launched 3 major feature updates</li>
+                    <li><strong>Team Expansion:</strong> Added 2 senior executives to leadership team</li>
+                </ul>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">${{ '{:,}'.format(random.randint(50000, 200000)) }}</div>
+                    <div class="metric-label">Monthly Recurring Revenue</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{{ random.randint(500, 2000) }}</div>
+                    <div class="metric-label">Active Customers</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{{ random.randint(15, 35) }}</div>
+                    <div class="metric-label">Team Members</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">{{ random.randint(85, 98) }}%</div>
+                    <div class="metric-label">Customer Satisfaction</div>
+                </div>
+            </div>
+
+            {% if specific_interest %}
+            <p><strong>Addressing your specific interest:</strong> {{ specific_interest }}</p>
+            {% endif %}
+
+            <div class="next-steps">
+                <h3>🎯 Proposed Next Steps</h3>
+                <ul>
+                    <li><strong>Detailed Pitch Deck:</strong> Comprehensive presentation with financial projections</li>
+                    <li><strong>Product Demo:</strong> Live demonstration of our {{ startup_industry }} platform</li>
+                    <li><strong>Financial Review:</strong> Detailed financial statements and unit economics</li>
+                    <li><strong>Reference Calls:</strong> Conversations with existing customers and partners</li>
+                    <li><strong>Due Diligence Package:</strong> Legal, technical, and business documentation</li>
+                </ul>
+            </div>
+
+            {% if relevant_portfolio_company %}
+            <p><strong>Portfolio Synergy:</strong> We believe {{ startup_name }} could create valuable synergies with your existing investment in {{ relevant_portfolio_company }}, particularly in {{ startup_industry }} market expansion.</p>
+            {% endif %}
+        </div>
+
+        <div class="call-to-action">
+            <h3>Ready to Move Forward?</h3>
+            <p>I'd love to schedule a comprehensive presentation and demo session at your convenience.</p>
+            <p><strong>Proposed meeting agenda (45 minutes):</strong></p>
+            <ul style="text-align: left; display: inline-block;">
+                <li>Company overview and vision (10 min)</li>
+                <li>Product demonstration (15 min)</li>
+                <li>Financial projections and metrics (10 min)</li>
+                <li>Q&A and next steps (10 min)</li>
+            </ul>
+            {% if meeting_availability %}
+            <p><strong>Available times:</strong> {{ meeting_availability }}</p>
+            {% endif %}
+        </div>
+
+        <div class="signature">
+            <div class="signature-name">{{ contact_person }}</div>
+            <div class="signature-title">CEO & Founder, {{ startup_name }}</div>
+            <div class="signature-contact">
+                📧 {{ startup_email }}<br>
+                📅 Available for calls: {{ meeting_availability or 'Flexible scheduling' }}<br>
+                📱 Direct: Available upon request
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Looking forward to building something great together!</p>
+            <p>{{ current_date }}</p>
+        </div>
+    </div>
+</body>
+</html>

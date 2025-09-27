@@ -1,0 +1,77 @@
+THANK YOU FOR THE PRODUCTIVE MEETING - {{ startup_name.upper() }}
+{{ '=' * (startup_name | length + 50) }}
+
+🙏 THANK YOU!
+
+Dear {{ partner_name }},
+
+Thank you for taking the time to meet with me today to discuss the {{ startup_name }} investment opportunity. It was a pleasure speaking with you and learning more about {{ fund_name }}'s investment focus and portfolio strategy.
+
+MEETING SUMMARY
+{{ '-' * 15 }}
+Our {{ meeting_date | format_date('%B %d, %Y') }} discussion covered {{ startup_name }}'s market opportunity, product capabilities, financial projections, and potential synergies with {{ fund_name }}'s portfolio. I was particularly excited to hear your thoughts on the {{ startup_industry }} market and how {{ startup_name }} fits into your investment thesis.
+
+KEY DISCUSSION POINTS
+{{ '-' * 20 }}
+🚀 MARKET OPPORTUNITY
+   Discussed the ${{ '{:,}'.format(random.randint(50, 200)) }}B {{ startup_industry }} market and {{ startup_name }}'s positioning
+
+💡 PRODUCT INNOVATION  
+   Demonstrated our proprietary technology and competitive advantages
+
+📈 GROWTH TRAJECTORY
+   Reviewed financial projections and scaling opportunities
+
+{% if relevant_portfolio_company %}
+🤝 PORTFOLIO SYNERGIES
+   Explored collaboration opportunities with {{ relevant_portfolio_company }}
+{% endif %}
+
+NEXT STEPS
+{{ '-' * 10 }}
+Based on our discussion, here are the proposed next steps:
+
+• Due Diligence Process: Complete comprehensive review of financials, legal docs, and technical architecture
+• Customer References: Arrange calls with 2-3 key customers for validation  
+• Team Interviews: Meet with additional team members and advisors
+• Market Validation: Review market research and competitive analysis
+• Partnership Committee: Present opportunity to investment committee
+
+ADDITIONAL MATERIALS
+{{ '-' * 18 }}
+As promised, I'm providing additional materials that may be helpful for your evaluation:
+
+📊 Detailed Financial Model
+🏢 Customer Case Studies  
+🔬 Technical Architecture
+📜 Legal Documentation
+
+{% if specific_interest %}
+ADDRESSING YOUR SPECIFIC INTEREST:
+I've prepared additional information about {{ specific_interest }} that we discussed during our meeting.
+
+{% endif %}
+TIMELINE EXPECTATIONS
+{{ '-' * 20 }}
+I understand that the due diligence process typically takes 4-6 weeks. I'm committed to providing any additional information you need and ensuring a smooth evaluation process.
+
+QUESTIONS OR ADDITIONAL INFORMATION?
+{{ '-' * 34 }}
+If you have any questions about the materials or need additional information for your evaluation, please don't hesitate to reach out.
+
+I'm available for follow-up calls or meetings at your convenience.
+{% if meeting_availability %}
+Available times: {{ meeting_availability }}
+{% endif %}
+
+Best regards,
+
+{{ contact_person }}
+CEO & Founder, {{ startup_name }}
+📧 {{ startup_email }}
+📅 Available for follow-up: {{ meeting_availability or 'Flexible scheduling' }}
+📱 Direct: Available upon request
+
+---
+Thank you again for your time and consideration. I look forward to continuing our partnership discussions!
+{{ current_date }}

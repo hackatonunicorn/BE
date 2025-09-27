@@ -1,0 +1,19 @@
+Subject: {subject}
+
+Dear {recipient_name},
+
+{sharing_opener}
+
+{deck_overview}
+
+{key_highlights}
+
+{next_steps}
+
+{availability}
+
+Best regards,
+{sender_signature}
+
+{startup_name}
+{contact_information}

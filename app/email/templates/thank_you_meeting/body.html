@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank you for the productive meeting - {{ startup_name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .thank-you {
+            font-size: 24px;
+            font-weight: 600;
+            color: #28a745;
+            margin: 0;
+        }
+        .startup-name {
+            font-size: 20px;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .content {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        .meeting-summary {
+            background-color: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .meeting-summary h3 {
+            margin: 0 0 15px 0;
+            color: #28a745;
+            font-size: 16px;
+        }
+        .key-discussion-points {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .key-discussion-points h3 {
+            margin: 0 0 20px 0;
+            color: #007bff;
+            font-size: 16px;
+        }
+        .discussion-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .discussion-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .discussion-item:last-child {
+            border-bottom: none;
+        }
+        .discussion-icon {
+            font-size: 18px;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+        .discussion-content {
+            flex-grow: 1;
+        }
+        .discussion-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .discussion-description {
+            color: #495057;
+            font-size: 14px;
+        }
+        .next-steps {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .next-steps h3 {
+            margin: 0 0 15px 0;
+            color: #856404;
+            font-size: 16px;
+        }
+        .next-steps ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .next-steps li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        .additional-materials {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .additional-materials h3 {
+            margin: 0 0 15px 0;
+            color: #1976d2;
+            font-size: 16px;
+        }
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .material-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+        .material-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .material-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        .call-to-action {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border-radius: 8px;
+            color: white;
+        }
+        .call-to-action h3 {
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: #28a745;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        .signature {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .signature-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .signature-title {
+            color: #6c757d;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .signature-contact {
+            color: #495057;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1 class="thank-you">🙏 Thank You!</h1>
+            <h2 class="startup-name">{{ startup_name }} Partnership Discussion</h2>
+        </div>
+
+        <div class="greeting">
+            Dear {{ partner_name }},
+        </div>
+
+        <div class="content">
+            <p>Thank you for taking the time to meet with me today to discuss the {{ startup_name }} investment opportunity. It was a pleasure speaking with you and learning more about {{ fund_name }}'s investment focus and portfolio strategy.</p>
+
+            <div class="meeting-summary">
+                <h3>📋 Meeting Summary</h3>
+                <p>Our {{ meeting_date | format_date('%B %d, %Y') }} discussion covered {{ startup_name }}'s market opportunity, product capabilities, financial projections, and potential synergies with {{ fund_name }}'s portfolio. I was particularly excited to hear your thoughts on the {{ startup_industry }} market and how {{ startup_name }} fits into your investment thesis.</p>
+            </div>
+
+            <div class="key-discussion-points">
+                <h3>🎯 Key Discussion Points</h3>
+                <ul class="discussion-list">
+                    <li class="discussion-item">
+                        <div class="discussion-icon">🚀</div>
+                        <div class="discussion-content">
+                            <div class="discussion-title">Market Opportunity</div>
+                            <div class="discussion-description">Discussed the ${{ '{:,}'.format(random.randint(50, 200)) }}B {{ startup_industry }} market and {{ startup_name }}'s positioning</div>
+                        </div>
+                    </li>
+                    <li class="discussion-item">
+                        <div class="discussion-icon">💡</div>
+                        <div class="discussion-content">
+                            <div class="discussion-title">Product Innovation</div>
+                            <div class="discussion-description">Demonstrated our proprietary technology and competitive advantages</div>
+                        </div>
+                    </li>
+                    <li class="discussion-item">
+                        <div class="discussion-icon">📈</div>
+                        <div class="discussion-content">
+                            <div class="discussion-title">Growth Trajectory</div>
+                            <div class="discussion-description">Reviewed financial projections and scaling opportunities</div>
+                        </div>
+                    </li>
+                    {% if relevant_portfolio_company %}
+                    <li class="discussion-item">
+                        <div class="discussion-icon">🤝</div>
+                        <div class="discussion-content">
+                            <div class="discussion-title">Portfolio Synergies</div>
+                            <div class="discussion-description">Explored collaboration opportunities with {{ relevant_portfolio_company }}</div>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="next-steps">
+                <h3>📅 Next Steps</h3>
+                <p>Based on our discussion, here are the proposed next steps:</p>
+                <ul>
+                    <li><strong>Due Diligence Process:</strong> Complete comprehensive review of financials, legal docs, and technical architecture</li>
+                    <li><strong>Customer References:</strong> Arrange calls with 2-3 key customers for validation</li>
+                    <li><strong>Team Interviews:</strong> Meet with additional team members and advisors</li>
+                    <li><strong>Market Validation:</strong> Review market research and competitive analysis</li>
+                    <li><strong>Partnership Committee:</strong> Present opportunity to investment committee</li>
+                </ul>
+            </div>
+
+            <div class="additional-materials">
+                <h3>📚 Additional Materials</h3>
+                <p>As promised, I'm providing additional materials that may be helpful for your evaluation:</p>
+                <div class="materials-grid">
+                    <div class="material-item">
+                        <div class="material-icon">📊</div>
+                        <div class="material-name">Detailed Financial Model</div>
+                    </div>
+                    <div class="material-item">
+                        <div class="material-icon">🏢</div>
+                        <div class="material-name">Customer Case Studies</div>
+                    </div>
+                    <div class="material-item">
+                        <div class="material-icon">🔬</div>
+                        <div class="material-name">Technical Architecture</div>
+                    </div>
+                    <div class="material-item">
+                        <div class="material-icon">📜</div>
+                        <div class="material-name">Legal Documentation</div>
+                    </div>
+                </div>
+            </div>
+
+            {% if specific_interest %}
+            <p><strong>Addressing Your Specific Interest:</strong> I've prepared additional information about {{ specific_interest }} that we discussed during our meeting.</p>
+            {% endif %}
+
+            <p><strong>Timeline Expectations:</strong> I understand that the due diligence process typically takes 4-6 weeks. I'm committed to providing any additional information you need and ensuring a smooth evaluation process.</p>
+        </div>
+
+        <div class="call-to-action">
+            <h3>Questions or Additional Information?</h3>
+            <p>If you have any questions about the materials or need additional information for your evaluation, please don't hesitate to reach out.</p>
+            <p><strong>I'm available for follow-up calls or meetings at your convenience.</strong></p>
+            {% if meeting_availability %}
+            <p>Available times: {{ meeting_availability }}</p>
+            {% endif %}
+        </div>
+
+        <div class="signature">
+            <div class="signature-name">{{ contact_person }}</div>
+            <div class="signature-title">CEO & Founder, {{ startup_name }}</div>
+            <div class="signature-contact">
+                📧 {{ startup_email }}<br>
+                📅 Available for follow-up: {{ meeting_availability or 'Flexible scheduling' }}<br>
+                📱 Direct: Available upon request
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Thank you again for your time and consideration. I look forward to continuing our partnership discussions!</p>
+            <p>{{ current_date }}</p>
+        </div>
+    </div>
+</body>
+</html>

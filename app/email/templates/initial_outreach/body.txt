@@ -1,0 +1,50 @@
+PARTNERSHIP OPPORTUNITY - {{ startup_name }}
+{{ '=' * (startup_name | length + 25) }}
+
+Dear {{ partner_name }},
+
+I hope this email finds you well. I'm {{ contact_person }}, CEO of {{ startup_name }}.
+
+{{ startup_name }} is a {{ startup_stage }} {{ startup_industry }} company that is revolutionizing the industry through innovative technology and strong market traction.
+
+{% if relevant_portfolio_company %}
+PORTFOLIO SYNERGY
+{{ '-' * 15 }}
+I noticed that {{ fund_name }} has invested in {{ relevant_portfolio_company }}, which operates in a complementary space to {{ startup_name }}. I believe there could be significant synergies between our companies.
+
+{% endif %}
+WHY {{ fund_name.upper() }}?
+{{ '-' * (fund_name | length + 5) }}
+Given your focus on {{ investment_focus | format_list }} and investments in {{ startup_stage }} companies, I believe {{ startup_name }} presents a compelling strategic fit for your portfolio.
+
+KEY HIGHLIGHTS
+{{ '-' * 13 }}
+• {{ startup_industry }} expertise with proven market traction
+• {{ startup_stage }} stage aligns perfectly with your investment criteria  
+• Strong leadership team with deep domain experience
+{% if ticket_size_range %}• Investment range fits within your {{ ticket_size_range }} sweet spot{% endif %}
+
+{% if pitch_summary %}
+WHAT WE'RE BUILDING:
+{{ pitch_summary | truncate_words(50) }}
+
+{% endif %}
+READY TO EXPLORE THIS OPPORTUNITY?
+{{ '-' * 30 }}
+I'd welcome the opportunity to discuss how {{ startup_name }} could be a valuable addition to your portfolio.
+
+Would you have 20 minutes for a brief call this week?
+{% if meeting_availability %}
+I'm available: {{ meeting_availability }}
+{% endif %}
+
+Best regards,
+
+{{ contact_person }}
+CEO & Founder, {{ startup_name }}
+📧 {{ startup_email }}
+📅 Available for calls: {{ meeting_availability or 'Flexible scheduling' }}
+
+---
+This email was sent to {{ vc_name }} regarding a potential investment opportunity.
+{{ current_date }}

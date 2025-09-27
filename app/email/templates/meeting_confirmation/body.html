@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Confirmed: {{ startup_name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .email-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .meeting-confirmed {
+            font-size: 24px;
+            font-weight: 600;
+            color: #28a745;
+            margin: 0;
+        }
+        .startup-name {
+            font-size: 20px;
+            color: #007bff;
+            margin: 10px 0;
+        }
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+        .content {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        .meeting-details {
+            background-color: #e8f5e8;
+            border: 2px solid #28a745;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .meeting-details h3 {
+            margin: 0 0 20px 0;
+            color: #28a745;
+            font-size: 18px;
+        }
+        .meeting-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .info-item {
+            text-align: center;
+        }
+        .info-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .agenda-section {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .agenda-section h3 {
+            margin: 0 0 20px 0;
+            color: #007bff;
+            font-size: 16px;
+        }
+        .agenda-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .agenda-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .agenda-item:last-child {
+            border-bottom: none;
+        }
+        .agenda-time {
+            font-weight: 600;
+            color: #007bff;
+            min-width: 80px;
+            margin-right: 15px;
+        }
+        .agenda-description {
+            flex-grow: 1;
+            color: #495057;
+        }
+        .preparation-section {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .preparation-section h3 {
+            margin: 0 0 15px 0;
+            color: #856404;
+            font-size: 16px;
+        }
+        .preparation-section ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .preparation-section li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        .contact-info {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        .contact-info h3 {
+            margin: 0 0 15px 0;
+            color: #1976d2;
+            font-size: 16px;
+        }
+        .signature {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .signature-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .signature-title {
+            color: #6c757d;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .signature-contact {
+            color: #495057;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1 class="meeting-confirmed">✅ Meeting Confirmed!</h1>
+            <h2 class="startup-name">{{ startup_name }} Partnership Discussion</h2>
+        </div>
+
+        <div class="greeting">
+            Dear {{ partner_name }},
+        </div>
+
+        <div class="content">
+            <p>Thank you for agreeing to meet and discuss the {{ startup_name }} investment opportunity. I'm excited about the potential partnership with {{ fund_name }} and look forward to our productive discussion.</p>
+
+            <div class="meeting-details">
+                <h3>📅 Meeting Details</h3>
+                <div class="meeting-info">
+                    <div class="info-item">
+                        <div class="info-label">Date</div>
+                        <div class="info-value">{{ meeting_date | format_date('%B %d, %Y') }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Time</div>
+                        <div class="info-value">{{ meeting_time }}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Duration</div>
+                        <div class="info-value">45 minutes</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Format</div>
+                        <div class="info-value">{{ meeting_type | capitalize_first }}</div>
+                    </div>
+                </div>
+                {% if meeting_type == 'video_call' %}
+                <p><strong>Meeting Link:</strong> Will be sent 30 minutes before the meeting</p>
+                {% elif meeting_type == 'in_person' %}
+                <p><strong>Location:</strong> {{ fund_name }} offices or mutually agreed location</p>
+                {% endif %}
+            </div>
+
+            <div class="agenda-section">
+                <h3>📋 Meeting Agenda</h3>
+                <ul class="agenda-list">
+                    <li class="agenda-item">
+                        <div class="agenda-time">5 min</div>
+                        <div class="agenda-description">Introduction and agenda overview</div>
+                    </li>
+                    <li class="agenda-item">
+                        <div class="agenda-time">10 min</div>
+                        <div class="agenda-description">Company overview and market opportunity</div>
+                    </li>
+                    <li class="agenda-item">
+                        <div class="agenda-time">15 min</div>
+                        <div class="agenda-description">Product demonstration and key features</div>
+                    </li>
+                    <li class="agenda-item">
+                        <div class="agenda-time">10 min</div>
+                        <div class="agenda-description">Financial projections and business model</div>
+                    </li>
+                    <li class="agenda-item">
+                        <div class="agenda-time">5 min</div>
+                        <div class="agenda-description">Q&A and next steps discussion</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="preparation-section">
+                <h3>📚 Preparation Materials</h3>
+                <p>To make our discussion as productive as possible, I've prepared the following materials:</p>
+                <ul>
+                    <li><strong>Executive Summary:</strong> One-page overview of {{ startup_name }}</li>
+                    <li><strong>Pitch Deck:</strong> 15-slide presentation with key highlights</li>
+                    <li><strong>Financial Projections:</strong> 3-year forecast and unit economics</li>
+                    <li><strong>Product Demo:</strong> Live demonstration of our {{ startup_industry }} platform</li>
+                    <li><strong>Market Analysis:</strong> Industry trends and competitive landscape</li>
+                    <li><strong>Team Overview:</strong> Key team members and their backgrounds</li>
+                </ul>
+            </div>
+
+            {% if relevant_portfolio_company %}
+            <p><strong>Portfolio Synergy Discussion:</strong> I'd also like to explore potential synergies with your existing investment in {{ relevant_portfolio_company }}, particularly in {{ startup_industry }} market expansion opportunities.</p>
+            {% endif %}
+
+            <div class="contact-info">
+                <h3>📞 Contact Information</h3>
+                <p>If you need to reach me before our meeting or have any questions about the materials, please don't hesitate to contact me:</p>
+                <p>
+                    <strong>Email:</strong> {{ startup_email }}<br>
+                    <strong>Phone:</strong> Available upon request<br>
+                    <strong>Availability:</strong> {{ meeting_availability or 'Flexible scheduling' }}
+                </p>
+            </div>
+
+            <p><strong>Looking forward to our discussion!</strong> I'm confident that {{ startup_name }} presents an exciting investment opportunity for {{ fund_name }}, and I'm eager to share our vision and answer any questions you may have.</p>
+        </div>
+
+        <div class="signature">
+            <div class="signature-name">{{ contact_person }}</div>
+            <div class="signature-title">CEO & Founder, {{ startup_name }}</div>
+            <div class="signature-contact">
+                📧 {{ startup_email }}<br>
+                📅 Meeting scheduled for {{ meeting_date | format_date('%B %d, %Y') }} at {{ meeting_time }}
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for your time and consideration of {{ startup_name }}.</p>
+            <p>{{ current_date }}</p>
+        </div>
+    </div>
+</body>
+</html>

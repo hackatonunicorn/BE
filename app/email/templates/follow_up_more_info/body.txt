@@ -1,0 +1,78 @@
+{{ startup_name.upper() }} - REQUESTED INFORMATION & MATERIALS
+{{ '=' * (startup_name | length + 35) }}
+
+Dear {{ partner_name }},
+
+Thank you for your interest in {{ startup_name }} and for requesting additional information. As promised, I've compiled a comprehensive package of materials that should provide you with all the details needed for your evaluation.
+
+REQUESTED DOCUMENTS & MATERIALS
+{{ '-' * 32 }}
+
+📊 PITCH DECK
+   Comprehensive 15-slide presentation covering market opportunity, solution, business model, and financial projections
+
+💰 FINANCIAL STATEMENTS  
+   Detailed P&L, balance sheet, cash flow statements, and 3-year projections
+
+📈 UNIT ECONOMICS
+   Customer acquisition cost, lifetime value, churn analysis, and cohort metrics
+
+👥 TEAM BIOS
+   Detailed backgrounds of founding team and key executives
+
+🏢 CUSTOMER REFERENCES
+   Contact information for 3 key customers willing to provide references
+
+📜 LEGAL DOCUMENTS
+   Cap table, IP portfolio, key contracts, and regulatory compliance status
+
+KEY FINANCIAL HIGHLIGHTS
+{{ '-' * 24 }}
+• ARR: ${{ '{:,}'.format(random.randint(100000, 500000)) }}
+• Gross Margin: {{ random.randint(85, 95) }}%
+• CAC: ${{ random.randint(150, 300) }}
+• LTV: ${{ random.randint(2000, 5000) }}
+• Monthly Churn: {{ random.randint(3, 8) }}%
+• LTV:CAC Ratio: {{ random.randint(150, 300) }}%
+
+{% if requested_documents %}
+SPECIFICALLY REQUESTED ITEMS
+{{ '-' * 26 }}
+{% for doc in requested_documents %}
+• {{ doc }} - Detailed analysis and supporting documentation
+{% endfor %}
+
+{% endif %}
+MARKET OPPORTUNITY
+{{ '-' * 16 }}
+The {{ startup_industry }} market is projected to reach ${{ '{:,}'.format(random.randint(50, 200)) }}B by {{ current_year + 3 }}, and {{ startup_name }} is well-positioned to capture a significant share with our {{ startup_stage }} stage solution.
+
+COMPETITIVE ADVANTAGE
+{{ '-' * 19 }}
+Our proprietary technology and strong customer relationships give us a sustainable competitive moat in the {{ startup_industry }} space.
+
+READY FOR NEXT STEPS?
+{{ '-' * 18 }}
+I'd be happy to walk through any of these materials in detail and answer any questions you may have.
+
+Proposed next steps:
+• Review materials and prepare questions
+• Schedule a 30-minute Q&A session  
+• Arrange customer reference calls
+• Plan comprehensive due diligence process
+
+{% if meeting_availability %}
+Available for discussion: {{ meeting_availability }}
+{% endif %}
+
+Best regards,
+
+{{ contact_person }}
+CEO & Founder, {{ startup_name }}
+📧 {{ startup_email }}
+📅 Available for calls: {{ meeting_availability or 'Flexible scheduling' }}
+📱 Direct: Available upon request
+
+---
+Thank you for considering {{ startup_name }} for your investment portfolio.
+{{ current_date }}

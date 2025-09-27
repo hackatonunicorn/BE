@@ -1,0 +1,66 @@
+MEETING CONFIRMED: {{ startup_name.upper() }} PARTNERSHIP DISCUSSION
+{{ '=' * (startup_name | length + 50) }}
+
+✅ MEETING CONFIRMED!
+
+Dear {{ partner_name }},
+
+Thank you for agreeing to meet and discuss the {{ startup_name }} investment opportunity. I'm excited about the potential partnership with {{ fund_name }} and look forward to our productive discussion.
+
+MEETING DETAILS
+{{ '-' * 15 }}
+📅 Date: {{ meeting_date | format_date('%B %d, %Y') }}
+🕐 Time: {{ meeting_time }}
+⏱️  Duration: 45 minutes
+📋 Format: {{ meeting_type | capitalize_first }}
+{% if meeting_type == 'video_call' %}
+🔗 Meeting Link: Will be sent 30 minutes before the meeting
+{% elif meeting_type == 'in_person' %}
+📍 Location: {{ fund_name }} offices or mutually agreed location
+{% endif %}
+
+MEETING AGENDA
+{{ '-' * 14 }}
+5 min  - Introduction and agenda overview
+10 min - Company overview and market opportunity
+15 min - Product demonstration and key features
+10 min - Financial projections and business model
+5 min  - Q&A and next steps discussion
+
+PREPARATION MATERIALS
+{{ '-' * 20 }}
+To make our discussion as productive as possible, I've prepared the following materials:
+
+• Executive Summary: One-page overview of {{ startup_name }}
+• Pitch Deck: 15-slide presentation with key highlights
+• Financial Projections: 3-year forecast and unit economics
+• Product Demo: Live demonstration of our {{ startup_industry }} platform
+• Market Analysis: Industry trends and competitive landscape
+• Team Overview: Key team members and their backgrounds
+
+{% if relevant_portfolio_company %}
+PORTFOLIO SYNERGY DISCUSSION
+{{ '-' * 27 }}
+I'd also like to explore potential synergies with your existing investment in {{ relevant_portfolio_company }}, particularly in {{ startup_industry }} market expansion opportunities.
+
+{% endif %}
+CONTACT INFORMATION
+{{ '-' * 18 }}
+If you need to reach me before our meeting or have any questions about the materials, please don't hesitate to contact me:
+
+📧 Email: {{ startup_email }}
+📱 Phone: Available upon request
+📅 Availability: {{ meeting_availability or 'Flexible scheduling' }}
+
+Looking forward to our discussion! I'm confident that {{ startup_name }} presents an exciting investment opportunity for {{ fund_name }}, and I'm eager to share our vision and answer any questions you may have.
+
+Best regards,
+
+{{ contact_person }}
+CEO & Founder, {{ startup_name }}
+📧 {{ startup_email }}
+📅 Meeting scheduled for {{ meeting_date | format_date('%B %d, %Y') }} at {{ meeting_time }}
+
+---
+Thank you for your time and consideration of {{ startup_name }}.
+{{ current_date }}

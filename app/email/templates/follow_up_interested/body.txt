@@ -1,0 +1,71 @@
+THANK YOU FOR YOUR INTEREST IN {{ startup_name.upper() }}!
+{{ '=' * (startup_name | length + 35) }}
+
+Dear {{ partner_name }},
+
+Thank you for your positive response regarding {{ startup_name }}. We're excited about the potential partnership and the opportunity to work with {{ fund_name }}.
+
+{% if previous_interaction %}
+Following up on our {{ previous_interaction }}, I wanted to share some exciting updates and next steps.
+
+{% endif %}
+RECENT PROGRESS & MILESTONES
+{{ '-' * 28 }}
+Since our last communication, {{ startup_name }} has achieved significant milestones:
+
+• Revenue Growth: 40% month-over-month increase
+• Customer Acquisition: 15 new enterprise customers signed  
+• Product Development: Launched 3 major feature updates
+• Team Expansion: Added 2 senior executives to leadership team
+
+KEY METRICS
+{{ '-' * 11 }}
+• Monthly Recurring Revenue: ${{ '{:,}'.format(random.randint(50000, 200000)) }}
+• Active Customers: {{ random.randint(500, 2000) }}
+• Team Members: {{ random.randint(15, 35) }}
+• Customer Satisfaction: {{ random.randint(85, 98) }}%
+
+{% if specific_interest %}
+ADDRESSING YOUR SPECIFIC INTEREST:
+{{ specific_interest }}
+
+{% endif %}
+PROPOSED NEXT STEPS
+{{ '-' * 18 }}
+• Detailed Pitch Deck: Comprehensive presentation with financial projections
+• Product Demo: Live demonstration of our {{ startup_industry }} platform
+• Financial Review: Detailed financial statements and unit economics
+• Reference Calls: Conversations with existing customers and partners
+• Due Diligence Package: Legal, technical, and business documentation
+
+{% if relevant_portfolio_company %}
+PORTFOLIO SYNERGY
+{{ '-' * 15 }}
+We believe {{ startup_name }} could create valuable synergies with your existing investment in {{ relevant_portfolio_company }}, particularly in {{ startup_industry }} market expansion.
+
+{% endif %}
+READY TO MOVE FORWARD?
+{{ '-' * 22 }}
+I'd love to schedule a comprehensive presentation and demo session at your convenience.
+
+Proposed meeting agenda (45 minutes):
+• Company overview and vision (10 min)
+• Product demonstration (15 min)  
+• Financial projections and metrics (10 min)
+• Q&A and next steps (10 min)
+
+{% if meeting_availability %}
+Available times: {{ meeting_availability }}
+{% endif %}
+
+Best regards,
+
+{{ contact_person }}
+CEO & Founder, {{ startup_name }}
+📧 {{ startup_email }}
+📅 Available for calls: {{ meeting_availability or 'Flexible scheduling' }}
+📱 Direct: Available upon request
+
+---
+Looking forward to building something great together!
+{{ current_date }}

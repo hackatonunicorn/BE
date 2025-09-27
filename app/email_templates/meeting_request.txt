@@ -1,0 +1,21 @@
+Subject: {subject}
+
+Dear {recipient_name},
+
+{meeting_opener}
+
+{meeting_purpose}
+
+{proposed_agenda}
+
+{time_availability}
+
+{meeting_logistics}
+
+{confirmation_request}
+
+Best regards,
+{sender_signature}
+
+{startup_name}
+{contact_information}
