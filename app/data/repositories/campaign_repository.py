@@ -4,14 +4,14 @@ from sqlalchemy import and_, or_, desc, asc
 from app.data.models import Campaign, CampaignStatus, User
 from app.data.repositories.base_repository import BaseRepository
 
-class CampaignRepository(BaseRepository[Campaign]):
-    def __init__(self, db: Session):
-        super().__init__(Campaign, db)
+class CampaignRepository(BaseRepository[Campaign, dict, dict]):
+    def __init__(self):
+        super().__init__(Campaign)
     
-    def get_by_user(self, user_id: int, skip: int = 0, limit: int = 100) -> List[Campaign]:
+    def get_by_user(self, db: Session, user_id: int, skip: int = 0, limit: int = 100) -> List[Campaign]:
         """Get all campaigns for a specific user"""
         return (
-            self.db.query(Campaign)
+            db.query(Campaign)
             .filter(Campaign.user_id == user_id)
             .order_by(desc(Campaign.updated_at))
             .offset(skip)
@@ -19,10 +19,10 @@ class CampaignRepository(BaseRepository[Campaign]):
             .all()
         )
     
-    def get_by_status(self, user_id: int, status: CampaignStatus, skip: int = 0, limit: int = 100) -> List[Campaign]:
+    def get_by_status(self, db: Session, user_id: int, status: CampaignStatus, skip: int = 0, limit: int = 100) -> List[Campaign]:
         """Get campaigns by status for a specific user"""
         return (
-            self.db.query(Campaign)
+            db.query(Campaign)
             .filter(
                 and_(
                     Campaign.user_id == user_id,
@@ -35,10 +35,10 @@ class CampaignRepository(BaseRepository[Campaign]):
             .all()
         )
     
-    def get_user_campaign_by_id(self, campaign_id: int, user_id: int) -> Optional[Campaign]:
+    def get_user_campaign_by_id(self, db: Session, campaign_id: int, user_id: int) -> Optional[Campaign]:
         """Get a specific campaign by ID that belongs to a user"""
         return (
-            self.db.query(Campaign)
+            db.query(Campaign)
             .filter(
                 and_(
                     Campaign.id == campaign_id,
@@ -48,9 +48,9 @@ class CampaignRepository(BaseRepository[Campaign]):
             .first()
         )
     
-    def update_status(self, campaign_id: int, user_id: int, status: CampaignStatus) -> Optional[Campaign]:
+    def update_status(self, db: Session, campaign_id: int, user_id: int, status: CampaignStatus) -> Optional[Campaign]:
         """Update campaign status"""
-        campaign = self.get_user_campaign_by_id(campaign_id, user_id)
+        campaign = self.get_user_campaign_by_id(db, campaign_id, user_id)
         if campaign:
             campaign.status = status
             if status == CampaignStatus.ACTIVE and not campaign.launched_at:
@@ -60,13 +60,13 @@ class CampaignRepository(BaseRepository[Campaign]):
                 from datetime import datetime
                 campaign.completed_at = datetime.utcnow()
             
-            self.db.commit()
-            self.db.refresh(campaign)
+            db.commit()
+            db.refresh(campaign)
         return campaign
     
-    def update_metrics(self, campaign_id: int, metrics: Dict[str, int]) -> Optional[Campaign]:
+    def update_metrics(self, db: Session, campaign_id: int, metrics: Dict[str, int]) -> Optional[Campaign]:
         """Update campaign metrics"""
-        campaign = self.get_by_id(campaign_id)
+        campaign = self.get(db, campaign_id)
         if campaign:
             if 'sent_count' in metrics:
                 campaign.sent_count = metrics['sent_count']
@@ -81,12 +81,13 @@ class CampaignRepository(BaseRepository[Campaign]):
             else:
                 campaign.response_rate = 0.0
             
-            self.db.commit()
-            self.db.refresh(campaign)
+            db.commit()
+            db.refresh(campaign)
         return campaign
     
     def search_campaigns(
         self, 
+        db: Session,
         user_id: int, 
         search_term: Optional[str] = None,
         status: Optional[CampaignStatus] = None,
@@ -95,7 +96,7 @@ class CampaignRepository(BaseRepository[Campaign]):
         limit: int = 100
     ) -> List[Campaign]:
         """Search campaigns with filters"""
-        query = self.db.query(Campaign).filter(Campaign.user_id == user_id)
+        query = db.query(Campaign).filter(Campaign.user_id == user_id)
         
         if search_term:
             query = query.filter(
@@ -120,9 +121,9 @@ class CampaignRepository(BaseRepository[Campaign]):
             .all()
         )
     
-    def get_campaign_stats(self, user_id: int) -> Dict[str, Any]:
+    def get_campaign_stats(self, db: Session, user_id: int) -> Dict[str, Any]:
         """Get campaign statistics for a user"""
-        campaigns = self.db.query(Campaign).filter(Campaign.user_id == user_id).all()
+        campaigns = db.query(Campaign).filter(Campaign.user_id == user_id).all()
         
         stats = {
             'total_campaigns': len(campaigns),
@@ -144,20 +145,20 @@ class CampaignRepository(BaseRepository[Campaign]):
         
         return stats
     
-    def get_recent_campaigns(self, user_id: int, limit: int = 5) -> List[Campaign]:
+    def get_recent_campaigns(self, db: Session, user_id: int, limit: int = 5) -> List[Campaign]:
         """Get recent campaigns for a user"""
         return (
-            self.db.query(Campaign)
+            db.query(Campaign)
             .filter(Campaign.user_id == user_id)
             .order_by(desc(Campaign.updated_at))
             .limit(limit)
             .all()
         )
     
-    def bulk_update_status(self, campaign_ids: List[int], user_id: int, status: CampaignStatus) -> int:
+    def bulk_update_status(self, db: Session, campaign_ids: List[int], user_id: int, status: CampaignStatus) -> int:
         """Bulk update campaign status"""
         updated_count = (
-            self.db.query(Campaign)
+            db.query(Campaign)
             .filter(
                 and_(
                     Campaign.id.in_(campaign_ids),
@@ -170,14 +171,14 @@ class CampaignRepository(BaseRepository[Campaign]):
             )
         )
         
-        self.db.commit()
+        db.commit()
         return updated_count
     
-    def delete_user_campaign(self, campaign_id: int, user_id: int) -> bool:
+    def delete_user_campaign(self, db: Session, campaign_id: int, user_id: int) -> bool:
         """Delete a campaign that belongs to a user"""
-        campaign = self.get_user_campaign_by_id(campaign_id, user_id)
+        campaign = self.get_user_campaign_by_id(db, campaign_id, user_id)
         if campaign:
-            self.db.delete(campaign)
-            self.db.commit()
+            db.delete(campaign)
+            db.commit()
             return True
         return False
