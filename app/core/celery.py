@@ -1,5 +1,5 @@
 from celery import Celery
-from app.core.config import settings
+from app.core.config_simple import settings
 
 celery_app = Celery(
     "startup_vc_platform",

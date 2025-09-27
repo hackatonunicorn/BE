@@ -13,7 +13,7 @@ from app.api.auth_schemas import (
     RefreshTokenRequest, PasswordResetRequest, PasswordReset,
     EmailVerificationRequest, ChangePasswordRequest, AuthResponse
 )
-from app.core.config import settings
+from app.core.config_simple import settings
 
 router = APIRouter(prefix="/auth", tags=["authentication"])
 security = HTTPBearer()

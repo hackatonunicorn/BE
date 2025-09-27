@@ -3,7 +3,7 @@ CRM integrations for syncing startup and VC data
 """
 from typing import Dict, Any, List
 import httpx
-from app.core.config import settings
+from app.core.config_simple import settings
 
 
 class CRMIntegration:

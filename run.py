@@ -3,7 +3,7 @@
 Main entry point for the Startup-VC Communication Platform
 """
 import uvicorn
-from app.core.config import settings
+from app.core.config_simple import settings
 
 if __name__ == "__main__":
     uvicorn.run(

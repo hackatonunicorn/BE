@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from typing import Generator
 import logging
 
-from app.core.config import settings
+from app.core.config_simple import settings
 
 logger = logging.getLogger(__name__)
 

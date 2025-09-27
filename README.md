@@ -27,10 +27,10 @@
 - **Custom ML** - классификация ответов
 
 ### Инфраструктура
-- **Docker** - контейнеризация
+- **Systemd** - управление сервисами
 - **Nginx** - reverse proxy
-- **Prometheus + Grafana** - мониторинг
-- **Elasticsearch + Kibana** - логи
+- **PostgreSQL** - основная база данных
+- **Redis** - кэширование и очереди
 
 ## 🚀 Быстрый старт
 
@@ -41,61 +41,72 @@
 git clone https://github.com/your-username/startup-vc-platform.git
 cd startup-vc-platform
 
+# Создание виртуального окружения
+python3.11 -m venv venv
+source venv/bin/activate  # Linux/Mac
+# или
+venv\Scripts\activate     # Windows
+
 # Установка зависимостей
 pip install -r requirements.txt
 
 # Настройка переменных окружения
-cp env.example .env
-# Отредактируйте .env файл
+cp .env .env.local
+# Отредактируйте .env.local файл
 
-# Запуск с Docker
-docker-compose up -d
-
-# Или запуск напрямую
+# Запуск приложения
 python run.py
 ```
 
 ### Развертывание на VPS
 
 ```bash
-# Быстрое развертывание
-sudo bash scripts/quick-deploy.sh
+# Пошаговое развертывание
+# Следуйте инструкциям в DEPLOYMENT_GUIDE.md
 
-# Или пошаговое развертывание
-# Следуйте инструкциям в DEPLOY_TO_VPS.md
+# Или используйте автоматический скрипт
+sudo bash install_vps.sh
 ```
 
 ## 📚 Документация
 
-- **[DEPLOY_TO_VPS.md](./DEPLOY_TO_VPS.md)** - Подробное руководство по развертыванию
-- **[DOCKER_DEPLOYMENT_GUIDE.md](./DOCKER_DEPLOYMENT_GUIDE.md)** - Развертывание с Docker
-- **[PROJECT_STATUS_REPORT.md](./PROJECT_STATUS_REPORT.md)** - Статус проекта
-- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Решение проблем
+- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)** - Полное руководство по развертыванию
+- **[install_vps.sh](./install_vps.sh)** - Автоматический скрипт установки
 
 ## 🔧 Управление
 
-### Docker команды
+### Systemd команды
 ```bash
-# Управление через скрипт
-./scripts/docker-manage.sh start      # Запуск
-./scripts/docker-manage.sh stop       # Остановка
-./scripts/docker-manage.sh logs       # Логи
-./scripts/docker-manage.sh backup     # Резервная копия
+# Управление основным приложением
+sudo systemctl start startup-vc      # Запуск
+sudo systemctl stop startup-vc        # Остановка
+sudo systemctl restart startup-vc     # Перезапуск
+sudo systemctl status startup-vc      # Статус
+
+# Управление фоновыми задачами
+sudo systemctl start startup-vc-celery startup-vc-celery-beat
+sudo systemctl stop startup-vc-celery startup-vc-celery-beat
+
+# Просмотр логов
+sudo journalctl -u startup-vc -f
 ```
 
 ### Основные команды
 ```bash
-# Запуск разработки
-docker-compose up -d
+# Активация виртуального окружения
+source venv/bin/activate
 
-# Запуск продакшена
-docker-compose -f docker-compose.prod.yml up -d
+# Запуск приложения
+python run.py
+
+# Запуск с Gunicorn (продакшен)
+gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 
 # Миграции БД
-docker-compose exec web alembic upgrade head
+alembic upgrade head
 
-# Просмотр логов
-docker-compose logs -f
+# Запуск Celery worker
+celery -A app.core.celery_app worker --loglevel=info
 ```
 
 ## 🌐 API Endpoints
@@ -136,9 +147,22 @@ docker-compose logs -f
 
 ### Доступные интерфейсы
 - **Приложение**: http://localhost:8000
-- **Grafana**: http://localhost:3000 (admin/admin123)
-- **Prometheus**: http://localhost:9090
-- **Kibana**: http://localhost:5601
+- **API документация**: http://localhost:8000/docs
+- **Health check**: http://localhost:8000/health
+
+### Системный мониторинг
+```bash
+# Проверка статуса сервисов
+sudo systemctl status startup-vc startup-vc-celery startup-vc-celery-beat
+
+# Просмотр логов
+sudo journalctl -u startup-vc -f
+
+# Мониторинг ресурсов
+htop
+df -h
+free -h
+```
 
 ## 🛠️ Разработка
 

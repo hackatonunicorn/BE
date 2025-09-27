@@ -27,7 +27,7 @@ except ImportError:
     anthropic = None
 
 from app.ai.text_processing import text_processor
-from app.core.config import settings
+from app.core.config_simple import settings
 
 logger = logging.getLogger(__name__)
 

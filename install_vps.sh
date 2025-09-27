@@ -21,6 +21,7 @@ DB_USER="startup_vc_user"
 DB_NAME="startup_vc_db"
 DB_PASSWORD="secure_password_123_$(date +%s)"  # Уникальный пароль
 JWT_SECRET="jwt_secret_$(openssl rand -hex 32)"  # Случайный JWT ключ
+SECRET_KEY="secret_$(openssl rand -hex 32)"  # Случайный секретный ключ
 
 echo "📋 Конфигурация:"
 echo "   - Пользователь приложения: $APP_USER"
@@ -100,7 +101,7 @@ else
     cd app
     
     # Проверка наличия файлов
-    if [ ! -f "minimal_app.py" ] && [ ! -f "main.py" ]; then
+    if [ ! -f "run.py" ] && [ ! -f "app/main.py" ]; then
         echo "⚠️  Файлы приложения не найдены. Создаю минимальное приложение..."
         cd ..
         rm -rf app
@@ -142,40 +143,21 @@ if __name__ == "__main__":
 EOF
 
 # Создание файла запуска
-sudo -u $APP_USER tee $APP_DIR/app/minimal_app.py > /dev/null << 'EOF'
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+sudo -u $APP_USER tee $APP_DIR/app/run.py > /dev/null << 'EOF'
+#!/usr/bin/env python3
+"""
+Main entry point for the Startup-VC Communication Platform
+"""
+import uvicorn
 
-app = FastAPI(title="Startup VC Platform", version="1.0.0")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.get("/")
-async def root():
-    return {"message": "Startup VC Platform API", "status": "running"}
-
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy", "service": "startup-vc-platform"}
-
-@app.get("/api/health")
-async def api_health():
-    return {"status": "healthy", "api_version": "1.0.0", "database": "connected"}
-
-@app.get("/api/campaigns/options")
-async def campaign_options():
-    return {
-        "industries": ["Technology", "Healthcare", "Fintech", "E-commerce", "AI/ML"],
-        "funding_stages": ["Seed", "Series A", "Series B", "Series C", "Growth"],
-        "team_sizes": ["1-5", "6-10", "11-20", "21-50", "50+"],
-        "locations": ["San Francisco", "New York", "London", "Berlin", "Singapore"]
-    }
+if __name__ == "__main__":
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=False,
+        log_level="info"
+    )
 EOF
 
 # Шаг 8: Создание виртуального окружения и установка зависимостей
@@ -184,34 +166,63 @@ sudo -u $APP_USER python3.11 -m venv $APP_DIR/venv
 sudo -u $APP_USER $APP_DIR/venv/bin/pip install --upgrade pip
 
 echo "📚 Установка Python зависимостей..."
-sudo -u $APP_USER $APP_DIR/venv/bin/pip install fastapi uvicorn python-multipart python-dotenv pydantic==1.10.13
+# Установка основных зависимостей
+sudo -u $APP_USER $APP_DIR/venv/bin/pip install fastapi uvicorn python-multipart python-dotenv pydantic==2.5.0
 sudo -u $APP_USER $APP_DIR/venv/bin/pip install sqlalchemy psycopg2-binary alembic python-jose[cryptography] passlib[bcrypt] email-validator
+
+# Если есть requirements.txt, установить из него
+if [ -f "$APP_DIR/app/requirements.txt" ]; then
+    echo "📦 Установка зависимостей из requirements.txt..."
+    sudo -u $APP_USER $APP_DIR/venv/bin/pip install -r $APP_DIR/app/requirements.txt
+fi
 
 # Шаг 9: Создание .env файла
 echo "⚙️ Создание конфигурации..."
-sudo -u $APP_USER tee $APP_DIR/.env > /dev/null << EOF
-# Database
+sudo -u $APP_USER tee $APP_DIR/app/.env > /dev/null << EOF
+# Основные настройки
+PROJECT_NAME=Startup-VC Communication Platform
+SECRET_KEY=$SECRET_KEY
+ENVIRONMENT=production
+DEBUG=false
+LOG_LEVEL=INFO
+
+# База данных
+POSTGRES_SERVER=localhost
+POSTGRES_USER=$DB_USER
+POSTGRES_PASSWORD=$DB_PASSWORD
+POSTGRES_DB=$DB_NAME
 DATABASE_URL=postgresql://$DB_USER:$DB_PASSWORD@localhost:5432/$DB_NAME
 
-# Security
+# Redis
+REDIS_URL=redis://localhost:6379/0
+
+# Безопасность
 JWT_SECRET_KEY=$JWT_SECRET
-JWT_ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-REFRESH_TOKEN_EXPIRE_DAYS=7
+ACCESS_TOKEN_EXPIRE_MINUTES=11520
 
-# Application
-APP_NAME=Startup VC Platform
-APP_VERSION=1.0.0
-DEBUG=False
-ENVIRONMENT=production
+# Email (настройте под ваши нужды)
+SMTP_HOST=smtp.gmail.com
+SMTP_USER=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+EMAILS_FROM_EMAIL=noreply@startup-vc-platform.com
+EMAILS_FROM_NAME=Startup-VC Platform
 
-# File Storage
-UPLOAD_DIR=$APP_DIR/uploads
+# AI (опционально)
+OPENAI_API_KEY=your-openai-api-key-here
+
+# Первый суперпользователь
+FIRST_SUPERUSER=admin@startup-vc-platform.com
+FIRST_SUPERUSER_PASSWORD=admin123
+
+# Файлы
 MAX_FILE_SIZE=10485760
+UPLOAD_FOLDER=uploads
 
-# Logging
-LOG_LEVEL=INFO
-LOG_FILE=$APP_DIR/logs/app.log
+# CORS
+BACKEND_CORS_ORIGINS=http://localhost:3000,http://localhost:8080,http://YOUR_SERVER_IP:8000
+
+# Производительность
+WORKERS=2
 EOF
 
 # Шаг 10: Настройка Nginx
@@ -259,40 +270,102 @@ nginx -t
 systemctl restart nginx
 systemctl enable nginx
 
-# Шаг 11: Настройка Supervisor
-echo "👥 Настройка Supervisor..."
-tee /etc/supervisor/conf.d/startup-vc.conf > /dev/null << EOF
-[program:startup-vc]
-command=$APP_DIR/venv/bin/uvicorn minimal_app:app --host 127.0.0.1 --port 8000 --workers 2
-directory=$APP_DIR/app
-user=$APP_USER
-autostart=true
-autorestart=true
-redirect_stderr=true
-stdout_logfile=$APP_DIR/logs/app.log
-stdout_logfile_maxbytes=50MB
-stdout_logfile_backups=10
-environment=PATH="$APP_DIR/venv/bin"
+# Шаг 11: Настройка systemd сервиса
+echo "👥 Настройка systemd сервиса..."
+tee /etc/systemd/system/startup-vc.service > /dev/null << EOF
+[Unit]
+Description=Startup VC Platform
+After=network.target postgresql.service redis.service
+
+[Service]
+Type=exec
+User=$APP_USER
+Group=$APP_USER
+WorkingDirectory=$APP_DIR/app
+Environment=PATH=$APP_DIR/venv/bin
+ExecStart=$APP_DIR/venv/bin/python run.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
 EOF
 
-# Перезапуск Supervisor
-supervisorctl reread
-supervisorctl update
-supervisorctl start startup-vc
+# Включение и запуск сервиса
+systemctl daemon-reload
+systemctl enable startup-vc
+systemctl start startup-vc
 
-# Шаг 12: Настройка брандмауэра
+# Шаг 12: Настройка Celery (если нужно)
+echo "🔄 Настройка Celery..."
+if [ -f "$APP_DIR/app/app/core/celery_app.py" ]; then
+    # Создание сервиса для Celery Worker
+    tee /etc/systemd/system/startup-vc-celery.service > /dev/null << EOF
+[Unit]
+Description=Startup VC Celery Worker
+After=network.target redis.service
+
+[Service]
+Type=exec
+User=$APP_USER
+Group=$APP_USER
+WorkingDirectory=$APP_DIR/app
+Environment=PATH=$APP_DIR/venv/bin
+ExecStart=$APP_DIR/venv/bin/celery -A app.core.celery_app worker --loglevel=info
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    # Создание сервиса для Celery Beat
+    tee /etc/systemd/system/startup-vc-celery-beat.service > /dev/null << EOF
+[Unit]
+Description=Startup VC Celery Beat
+After=network.target redis.service
+
+[Service]
+Type=exec
+User=$APP_USER
+Group=$APP_USER
+WorkingDirectory=$APP_DIR/app
+Environment=PATH=$APP_DIR/venv/bin
+ExecStart=$APP_DIR/venv/bin/celery -A app.core.celery_app beat --loglevel=info
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+    # Включение и запуск Celery сервисов
+    systemctl daemon-reload
+    systemctl enable startup-vc-celery startup-vc-celery-beat
+    systemctl start startup-vc-celery startup-vc-celery-beat
+fi
+
+# Шаг 13: Запуск миграций (если есть)
+echo "🗄️ Запуск миграций базы данных..."
+if [ -f "$APP_DIR/app/alembic.ini" ]; then
+    cd $APP_DIR/app
+    sudo -u $APP_USER $APP_DIR/venv/bin/alembic upgrade head
+fi
+
+# Шаг 14: Настройка брандмауэра
 echo "🔥 Настройка брандмауэра..."
 ufw allow ssh
 ufw allow 'Nginx Full'
+ufw allow 8000
 ufw --force enable
 
-# Шаг 13: Проверка установки
+# Шаг 15: Проверка установки
 echo "🔍 Проверка установки..."
 sleep 5
 
 # Проверка статуса сервисов
 echo "📊 Статус сервисов:"
-systemctl is-active nginx postgresql redis-server supervisor
+systemctl is-active nginx postgresql redis-server startup-vc
 
 # Проверка приложения
 echo "🌐 Тестирование приложения..."
@@ -310,34 +383,38 @@ tee $APP_DIR/manage.sh > /dev/null << 'EOF'
 case "$1" in
     start)
         echo "Запуск приложения..."
-        supervisorctl start startup-vc
+        sudo systemctl start startup-vc
         ;;
     stop)
         echo "Остановка приложения..."
-        supervisorctl stop startup-vc
+        sudo systemctl stop startup-vc
         ;;
     restart)
         echo "Перезапуск приложения..."
-        supervisorctl restart startup-vc
+        sudo systemctl restart startup-vc
         ;;
     status)
         echo "Статус приложения:"
-        supervisorctl status startup-vc
+        sudo systemctl status startup-vc
         ;;
     logs)
         echo "Просмотр логов:"
-        tail -f /opt/startup-vc/logs/app.log
+        sudo journalctl -u startup-vc -f
         ;;
     update)
         echo "Обновление приложения..."
         cd /opt/startup-vc/app
-        git pull origin main
-        /opt/startup-vc/venv/bin/pip install -r requirements_simple.txt
-        /opt/startup-vc/venv/bin/alembic upgrade head
-        supervisorctl restart startup-vc
+        sudo -u startup-vc git pull origin main
+        sudo -u startup-vc /opt/startup-vc/venv/bin/pip install -r requirements.txt
+        sudo -u startup-vc /opt/startup-vc/venv/bin/alembic upgrade head
+        sudo systemctl restart startup-vc
+        ;;
+    backup)
+        echo "Создание резервной копии БД..."
+        sudo -u postgres pg_dump startup_vc_db > /opt/startup-vc/backups/backup_$(date +%Y%m%d_%H%M%S).sql
         ;;
     *)
-        echo "Использование: $0 {start|stop|restart|status|logs|update}"
+        echo "Использование: $0 {start|stop|restart|status|logs|update|backup}"
         exit 1
         ;;
 esac
@@ -370,25 +447,13 @@ echo "   - Статус: $APP_DIR/manage.sh status"
 echo "   - Логи: $APP_DIR/manage.sh logs"
 echo ""
 echo "📚 Полезные команды:"
-echo "   - Просмотр логов: tail -f $APP_DIR/logs/app.log"
-echo "   - Статус сервисов: systemctl status nginx postgresql redis-server supervisor"
+echo "   - Просмотр логов: sudo journalctl -u startup-vc -f"
+echo "   - Статус сервисов: sudo systemctl status startup-vc nginx postgresql redis-server"
 echo "   - Проверка БД: sudo -u postgres psql -d $DB_NAME"
 echo ""
 echo "⚠️  ВАЖНО:"
-echo "   - Измените пароли в $APP_DIR/.env"
+echo "   - Измените пароли в $APP_DIR/app/.env"
 echo "   - Настройте SSL сертификат для продакшена"
 echo "   - Регулярно создавайте резервные копии"
 echo ""
 echo "🎉 Приложение готово к использованию!"
-EOF
-
-chmod +x install_vps.sh
-
-echo "✅ Автоматический скрипт установки создан: install_vps.sh"
-echo ""
-echo "Для развертывания на вашем VPS:"
-echo "1. Загрузите скрипт на сервер: scp install_vps.sh root@YOUR_VPS_IP:/root/"
-echo "2. Подключитесь к серверу: ssh root@YOUR_VPS_IP"
-echo "3. Запустите установку: sudo bash /root/install_vps.sh"
-echo ""
-echo "Или следуйте пошаговой инструкции в DEPLOY_TO_VPS.md"

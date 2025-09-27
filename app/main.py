@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 import uvicorn
 
 from app.core.database import get_db, create_tables
-from app.core.config import settings
+from app.core.config_simple import settings
 from app.api.auth import router as auth_router
 from app.core.auth import get_current_active_user
 from app.data.models import User

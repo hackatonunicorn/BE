@@ -15,7 +15,7 @@ try:
 except ImportError:
     anthropic = None
 
-from app.core.config import settings
+from app.core.config_simple import settings
 
 logger = logging.getLogger(__name__)
 

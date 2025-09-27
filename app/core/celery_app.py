@@ -10,7 +10,7 @@ from kombu import Queue
 import redis
 from datetime import timedelta
 
-from app.core.config import settings
+from app.core.config_simple import settings
 
 logger = logging.getLogger(__name__)
 
