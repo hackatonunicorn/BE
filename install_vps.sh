@@ -80,9 +80,34 @@ echo "📁 Создание директорий..."
 mkdir -p $APP_DIR/{app,logs,uploads,static,backups}
 chown -R $APP_USER:$APP_USER $APP_DIR
 
-# Шаг 7: Копирование файлов приложения
-echo "📄 Подготовка файлов приложения..."
-cd $APP_DIR
+# Шаг 7: Клонирование проекта из GitHub
+echo "📄 Клонирование проекта из GitHub..."
+
+# Запрос URL репозитория
+echo ""
+echo "🔗 Введите URL вашего GitHub репозитория:"
+echo "   Пример: https://github.com/your-username/startup-vc-platform.git"
+read -p "GitHub URL: " GITHUB_URL
+
+if [ -z "$GITHUB_URL" ]; then
+    echo "❌ URL репозитория не указан. Создаю минимальное приложение..."
+    cd $APP_DIR
+    # Создание минимального приложения (код уже есть в скрипте)
+else
+    echo "📥 Клонирование репозитория..."
+    cd $APP_DIR
+    sudo -u $APP_USER git clone $GITHUB_URL app
+    cd app
+    
+    # Проверка наличия файлов
+    if [ ! -f "minimal_app.py" ] && [ ! -f "main.py" ]; then
+        echo "⚠️  Файлы приложения не найдены. Создаю минимальное приложение..."
+        cd ..
+        rm -rf app
+        sudo -u $APP_USER mkdir app
+        cd app
+    fi
+fi
 
 # Создание минимального приложения для тестирования
 sudo -u $APP_USER tee $APP_DIR/app/main.py > /dev/null << 'EOF'
@@ -306,7 +331,9 @@ case "$1" in
     update)
         echo "Обновление приложения..."
         cd /opt/startup-vc/app
-        git pull
+        git pull origin main
+        /opt/startup-vc/venv/bin/pip install -r requirements_simple.txt
+        /opt/startup-vc/venv/bin/alembic upgrade head
         supervisorctl restart startup-vc
         ;;
     *)

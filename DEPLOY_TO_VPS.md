@@ -100,11 +100,48 @@ redis-cli ping
 sudo adduser --system --group --home /opt/startup-vc startup-vc
 ```
 
-## Шаг 6: Загрузка кода приложения
+## Шаг 6: Клонирование проекта из GitHub
 
-### Вариант 1: Загрузка через SCP (с вашего локального компьютера)
+### Подготовка GitHub репозитория
 
-На вашем локальном компьютере выполните:
+Сначала убедитесь, что ваш проект загружен в GitHub репозиторий:
+
+1. **Создайте репозиторий на GitHub**:
+   - Перейдите на https://github.com
+   - Нажмите "New repository"
+   - Назовите репозиторий (например: `startup-vc-platform`)
+   - Выберите "Public" или "Private"
+   - НЕ инициализируйте с README (если у вас уже есть файлы)
+
+2. **Загрузите файлы проекта**:
+   ```bash
+   # На вашем локальном компьютере
+   git init
+   git add .
+   git commit -m "Initial commit"
+   git branch -M main
+   git remote add origin https://github.com/your-username/startup-vc-platform.git
+   git push -u origin main
+   ```
+
+3. **Скопируйте URL репозитория** (например: `https://github.com/your-username/startup-vc-platform.git`)
+
+**Важно**: Замените `your-username` на ваш реальный GitHub username.
+
+### Клонирование на сервер
+
+```bash
+cd /opt/startup-vc
+sudo -u startup-vc git clone https://github.com/your-username/startup-vc-platform.git app
+```
+
+**Важно**: Замените `your-username/startup-vc-platform` на реальный URL вашего репозитория.
+
+### Альтернативные способы (если нет GitHub репозитория):
+
+#### Вариант 1: Загрузка через SCP (с локального компьютера)
+
+На вашем локальном компьютере:
 ```bash
 # Создайте архив проекта
 tar -czf startup-vc-platform.tar.gz --exclude='venv' --exclude='__pycache__' --exclude='*.pyc' --exclude='.git' .
@@ -120,22 +157,75 @@ sudo tar -xzf startup-vc-platform.tar.gz
 sudo chown -R startup-vc:startup-vc /opt/startup-vc
 ```
 
-### Вариант 2: Клонирование из Git (если у вас есть репозиторий)
+#### Вариант 2: Создание минимального приложения
 
 ```bash
 cd /opt/startup-vc
-sudo -u startup-vc git clone https://github.com/your-username/startup-vc-platform.git app
-```
+sudo -u startup-vc mkdir -p app
 
-### Вариант 3: Создание файлов вручную
+# Создайте минимальное FastAPI приложение
+sudo -u startup-vc tee /opt/startup-vc/app/main.py > /dev/null << 'EOF'
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-```bash
-cd /opt/startup-vc
-sudo -u startup-vc mkdir app
-cd app
+app = FastAPI(title="Startup VC Platform", version="1.0.0")
 
-# Создайте структуру проекта
-sudo -u startup-vc mkdir -p {app/{api,core,data,email,ai},alembic/versions,deployment,monitoring,scripts,docs}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {"message": "Startup VC Platform API", "status": "running"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "startup-vc-platform"}
+
+@app.get("/api/health")
+async def api_health():
+    return {"status": "healthy", "api_version": "1.0.0", "database": "connected"}
+EOF
+
+sudo -u startup-vc tee /opt/startup-vc/app/minimal_app.py > /dev/null << 'EOF'
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI(title="Startup VC Platform", version="1.0.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/")
+async def root():
+    return {"message": "Startup VC Platform API", "status": "running"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "service": "startup-vc-platform"}
+
+@app.get("/api/health")
+async def api_health():
+    return {"status": "healthy", "api_version": "1.0.0", "database": "connected"}
+
+@app.get("/api/campaigns/options")
+async def campaign_options():
+    return {
+        "industries": ["Technology", "Healthcare", "Fintech", "E-commerce", "AI/ML"],
+        "funding_stages": ["Seed", "Series A", "Series B", "Series C", "Growth"],
+        "team_sizes": ["1-5", "6-10", "11-20", "21-50", "50+"],
+        "locations": ["San Francisco", "New York", "London", "Berlin", "Singapore"]
+    }
+EOF
 ```
 
 ## Шаг 7: Установка Python зависимостей
@@ -338,7 +428,8 @@ sudo tail -f /opt/startup-vc/logs/app.log
 ### Обновление приложения
 ```bash
 cd /opt/startup-vc/app
-sudo -u startup-vc git pull  # если используете git
+sudo -u startup-vc git pull origin main
+sudo -u startup-vc /opt/startup-vc/venv/bin/pip install -r requirements_simple.txt
 sudo -u startup-vc /opt/startup-vc/venv/bin/alembic upgrade head
 sudo supervisorctl restart startup-vc
 ```

@@ -7,7 +7,15 @@ python-dotenv==1.0.0
 # Pydantic (более старая версия без Rust)
 pydantic==1.10.13
 
-# База данных (пропускаем пока)
-# sqlalchemy==2.0.23
-# psycopg2-binary==2.9.9
-# alembic==1.12.1
+# База данных
+sqlalchemy
+psycopg2-binary
+alembic
+
+# Pydantic settings
+pydantic-settings==2.0.3
+
+# Аутентификация
+python-jose[cryptography]
+passlib[bcrypt]
+email-validator

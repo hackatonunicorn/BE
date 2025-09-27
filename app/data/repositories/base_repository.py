@@ -12,7 +12,7 @@ CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
 
-class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
+class BaseRepository(Generic[ModelType]):
     """
     Base repository with common CRUD operations
     """
@@ -50,7 +50,7 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
             logger.error(f"Error getting multiple {self.model.__name__}: {e}")
             raise
 
-    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
+    def create(self, db: Session, *, obj_in: Any) -> ModelType:
         """Create a new record"""
         try:
             obj_data = obj_in.dict() if hasattr(obj_in, 'dict') else obj_in
@@ -69,7 +69,7 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         db: Session, 
         *, 
         db_obj: ModelType, 
-        obj_in: UpdateSchemaType
+        obj_in: Any
     ) -> ModelType:
         """Update an existing record"""
         try:
