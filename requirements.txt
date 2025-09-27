@@ -1,19 +1,18 @@
 # ===========================================
-# Startup VC Platform - No Rust Dependencies
+# Startup VC Platform - Compatible Dependencies
 # ===========================================
 
-# Web Framework
-fastapi==0.104.1
+# Web Framework (compatible with Pydantic v1.x)
+fastapi==0.68.0
 uvicorn[standard]==0.24.0
 
-# Database (use psycopg2 instead of psycopg2-binary)
+# Database
 sqlalchemy==2.0.23
-psycopg2==2.9.9
 alembic==1.12.1
 
-# Pydantic (use v1.x to avoid Rust dependencies)
+# Data validation (compatible versions)
 pydantic==1.10.13
-pydantic-settings==2.1.0
+pydantic-settings==0.2.5
 email-validator==2.1.0
 
 # Authentication & Security
@@ -25,33 +24,21 @@ python-multipart==0.0.6
 aiosmtplib==3.0.1
 jinja2==3.1.2
 
-# AI/ML Libraries (replace with non-Rust alternatives)
-openai==1.3.7
-transformers==4.35.2
-tokenizers==0.15.0
-
-# HTTP Client (use httpx only, remove aiohttp)
+# HTTP Client
 httpx==0.25.2
 
 # Task Queue
 celery==5.3.4
 redis==5.0.1
-apscheduler==3.10.4
 
 # File processing
 python-docx==1.1.0
 PyPDF2==3.0.1
 openpyxl==3.1.2
 
-# Monitoring & Logging
-structlog==23.2.0
+# Environment
+python-dotenv==1.0.0
 
 # Development
 pytest==7.4.3
-pytest-asyncio==0.21.1
 black==23.11.0
-isort==5.12.0
-flake8==6.1.0
-
-# Environment
-python-dotenv==1.0.0
